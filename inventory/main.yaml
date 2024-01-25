@@ -1,0 +1,20 @@
+---
+
+all:
+  children:
+    consul_servers:
+      vars:
+        ansible_user      : playground
+        ansible_ssh_pass  : Ansible
+        ansible_sudo_pass : Ansible
+      hosts:
+        18.170.73.11:
+    consul_clients:
+      vars: 
+        ansible_user: playground
+        ansible_ssh_pass  : Ansible
+        ansible_sudo_pass : Ansible
+      hosts:
+        18.170.214.168:
+
+        

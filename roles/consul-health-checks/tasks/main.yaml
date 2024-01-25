@@ -1,0 +1,28 @@
+---
+
+- name          : Register services
+  service_facts :
+
+- name        : Does the Consul service exsist?
+  debug       :
+    msg : "Consul service does not exist!"
+  failed_when : ("consul.service" not in ansible_facts.services)
+  when        : ("consul.service" not in ansible_facts.services)
+
+- name        : Is the consul service running?
+  debug       :
+    msg : "Consul service isn't running!"
+  failed_when : (ansible_facts.services["consul.service"].state != "running")
+  when        : (ansible_facts.services["consul.service"].state != "running")
+
+- name     : Get Consul Server health Data
+  uri      :
+    url : "http://{{ inventory_hostname }}:8500/v1/health/node/consul-server-{{ ansible_hostname }}"
+  when     : ("consul_servers" in group_names)
+  register : consule_node_health
+
+- name        : Print Consul Server health Data Variable when unhealthy
+  debug       : 
+    var : consule_node_health
+  failed_when : consule_node_health.json[0].Status != "passing"
+  when        : ("consul_servers" in group_names)

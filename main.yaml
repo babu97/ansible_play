@@ -1,0 +1,7 @@
+---
+
+- name: Consul health checks
+  hosts: all
+  become: true
+  roles:
+    - consul-health-checks
